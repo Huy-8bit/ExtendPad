@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="96dp" android:height="96dp" android:viewportWidth="96" android:viewportHeight="96">
+    <!-- Mac screen -->
+    <path android:fillColor="#00000000" android:strokeColor="#FF9AA3B5" android:strokeWidth="4" android:pathData="M10,22h44a4,4 0,0 1,4 4v28a4,4 0,0 1,-4 4h-44a4,4 0,0 1,-4 -4v-28a4,4 0,0 1,4 -4z"/>
+    <path android:fillColor="#FF9AA3B5" android:pathData="M24,62h16v4h-16z"/>
+    <!-- Tablet (extended) -->
+    <path android:fillColor="#334C8DFF" android:strokeColor="#FF4C8DFF" android:strokeWidth="4" android:pathData="M50,36h34a4,4 0,0 1,4 4v30a4,4 0,0 1,-4 4h-34a4,4 0,0 1,-4 -4v-30a4,4 0,0 1,4 -4z"/>
+    <!-- cable -->
+    <path android:fillColor="#00000000" android:strokeColor="#FF4C8DFF" android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M58,58 C62,66 66,78 67,86"/>
+</vector>
