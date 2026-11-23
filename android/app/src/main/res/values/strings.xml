@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ExtendPad</string>
+    <string name="connecting">Connecting to your Mac…</string>
+    <string name="connecting_detail">Make sure ExtendPad is running on the Mac and the tablet is connected with a USB-C data cable.</string>
+    <string name="handshaking">Securing the connection…</string>
+    <string name="starting_stream">Starting the extended display…</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="disconnected_detail">Tap Connect to use this tablet as a Mac display again.</string>
+    <string name="not_paired">Not paired with a Mac yet</string>
+    <string name="not_paired_detail">Open ExtendPad on your Mac and plug in the USB cable. The Mac opens this app automatically and pairs it over USB.</string>
+    <string name="rejected">The Mac rejected this tablet</string>
+    <string name="rejected_detail">%1$s\nUnplug and replug the cable (or click Connect on the Mac) to pair again.</string>
+    <string name="instructions">1. On the tablet: Settings → About tablet → tap “Build number” 7× to unlock Developer options.\n2. Developer options → enable USB debugging (Huawei: also “Allow ADB debugging in charge only mode”).\n3. Connect the tablet to the Mac with a USB-C data cable and tap “Allow” on the debugging prompt.\n4. Start ExtendPad on the Mac and click Connect. Everything else is automatic.</string>
+    <string name="retry_now">Connect</string>
+    <string name="developer_options">Developer options</string>
+    <string name="settings">Settings</string>
+    <string name="controls">Display controls</string>
+    <string name="connection_info">Connection info</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="quality_fmt">Quality: %1$s</string>
+    <string name="scaling_fmt">Scaling: %1$s</string>
+    <string name="touch_on">Touch input: on</string>
+    <string name="touch_off">Touch input: off</string>
+    <string name="touch_mac_disabled">Touch input: enable it on the Mac</string>
+    <string name="stats_on">Statistics: shown</string>
+    <string name="stats_off">Statistics: hidden</string>
+    <string name="q_performance">Performance</string>
+    <string name="q_balanced">Balanced</string>
+    <string name="q_quality">Quality</string>
+    <string name="p_native">Native</string>
+    <string name="p_comfortable">Comfortable</string>
+    <string name="p_large">Large</string>
+    <string name="p_performance">Performance</string>
+    <string name="p_custom">Custom</string>
+    <string name="usb_state">USB cable: %1$s · USB debugging: %2$s</string>
+    <string name="tunnel_state">USB tunnel: %1$s</string>
+    <string name="state_connected">connected</string>
+    <string name="state_not_detected">not detected</string>
+    <string name="state_on">on</string>
+    <string name="state_off">off</string>
+    <string name="tunnel_none">not set up yet (waiting for the Mac)</string>
+    <string name="tunnel_no_server">present, ExtendPad on the Mac is not listening</string>
+    <string name="tunnel_ok">active</string>
+    <string name="tunnel_unknown">checking…</string>
+    <string name="mac_error">Mac: %1$s</string>
+    <string name="settings_title">ExtendPad settings</string>
+    <string name="opt_stats">Show statistics overlay</string>
+    <string name="opt_touch">Use touchscreen as a pointer (tap = click, long-press = right-click, two fingers = scroll)</string>
+    <string name="opt_autoconnect">Connect automatically</string>
+    <string name="forget_pairing">Forget pairing</string>
+    <string name="close">Close</string>
+    <string name="paired_with">Paired: %1$s</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="about">ExtendPad %1$s · local USB only, no internet, no accounts.</string>
+</resources>

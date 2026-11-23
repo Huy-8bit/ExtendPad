@@ -1,0 +1,20 @@
+# Build outputs
+macos/.build/
+macos/.swiftpm/
+android/.gradle/
+android/build/
+android/app/build/
+android/.kotlin/
+android/local.properties
+*.iml
+.idea/
+
+# Local test / diagnostics output (may contain logs and screenshots)
+dist/diagnostics-*/
+dist/e2e-*/
+
+# macOS
+.DS_Store
+
+# Editor settings
+.vscode/

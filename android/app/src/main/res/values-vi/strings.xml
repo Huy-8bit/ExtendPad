@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connecting">Đang kết nối tới máy Mac…</string>
+    <string name="connecting_detail">Hãy chắc chắn ExtendPad đang chạy trên Mac và máy tính bảng được cắm bằng cáp USB-C truyền dữ liệu.</string>
+    <string name="handshaking">Đang bảo mật kết nối…</string>
+    <string name="starting_stream">Đang khởi động màn hình mở rộng…</string>
+    <string name="disconnected">Đã ngắt kết nối</string>
+    <string name="disconnected_detail">Chạm Kết nối để dùng lại máy tính bảng làm màn hình Mac.</string>
+    <string name="not_paired">Chưa ghép đôi với máy Mac</string>
+    <string name="not_paired_detail">Mở ExtendPad trên Mac và cắm cáp USB. Mac sẽ tự mở ứng dụng này và ghép đôi qua USB.</string>
+    <string name="rejected">Mac đã từ chối máy tính bảng này</string>
+    <string name="rejected_detail">%1$s\nHãy rút và cắm lại cáp (hoặc bấm Kết nối trên Mac) để ghép đôi lại.</string>
+    <string name="instructions">1. Trên máy tính bảng: Cài đặt → Thông tin máy → chạm “Số bản dựng” 7 lần để mở Tuỳ chọn nhà phát triển.\n2. Tuỳ chọn nhà phát triển → bật Gỡ lỗi USB (Huawei: bật thêm “Cho phép gỡ lỗi ADB ở chế độ chỉ sạc”).\n3. Cắm máy tính bảng vào Mac bằng cáp USB-C có truyền dữ liệu và chạm “Cho phép” ở hộp thoại gỡ lỗi.\n4. Mở ExtendPad trên Mac và bấm Kết nối. Mọi thứ còn lại là tự động.</string>
+    <string name="retry_now">Kết nối</string>
+    <string name="developer_options">Tuỳ chọn nhà phát triển</string>
+    <string name="settings">Cài đặt</string>
+    <string name="controls">Điều khiển màn hình</string>
+    <string name="connection_info">Thông tin kết nối</string>
+    <string name="disconnect">Ngắt kết nối</string>
+    <string name="quality_fmt">Chất lượng: %1$s</string>
+    <string name="scaling_fmt">Tỷ lệ: %1$s</string>
+    <string name="touch_on">Cảm ứng: bật</string>
+    <string name="touch_off">Cảm ứng: tắt</string>
+    <string name="touch_mac_disabled">Cảm ứng: hãy bật trên Mac</string>
+    <string name="stats_on">Thống kê: hiện</string>
+    <string name="stats_off">Thống kê: ẩn</string>
+    <string name="q_performance">Hiệu năng</string>
+    <string name="q_balanced">Cân bằng</string>
+    <string name="q_quality">Chất lượng</string>
+    <string name="p_native">Gốc</string>
+    <string name="p_comfortable">Dễ đọc</string>
+    <string name="p_large">Lớn</string>
+    <string name="p_performance">Hiệu năng</string>
+    <string name="p_custom">Tuỳ chỉnh</string>
+    <string name="usb_state">Cáp USB: %1$s · Gỡ lỗi USB: %2$s</string>
+    <string name="tunnel_state">Đường hầm USB: %1$s</string>
+    <string name="state_connected">đã cắm</string>
+    <string name="state_not_detected">không phát hiện</string>
+    <string name="state_on">bật</string>
+    <string name="state_off">tắt</string>
+    <string name="tunnel_none">chưa thiết lập (đang chờ Mac)</string>
+    <string name="tunnel_no_server">đã có, nhưng ExtendPad trên Mac chưa sẵn sàng</string>
+    <string name="tunnel_ok">đang hoạt động</string>
+    <string name="tunnel_unknown">đang kiểm tra…</string>
+    <string name="mac_error">Mac: %1$s</string>
+    <string name="settings_title">Cài đặt ExtendPad</string>
+    <string name="opt_stats">Hiện lớp thống kê</string>
+    <string name="opt_touch">Dùng màn hình cảm ứng làm con trỏ (chạm = nhấp, giữ = nhấp phải, hai ngón = cuộn)</string>
+    <string name="opt_autoconnect">Tự động kết nối</string>
+    <string name="forget_pairing">Huỷ ghép đôi</string>
+    <string name="close">Đóng</string>
+    <string name="paired_with">Đã ghép đôi: %1$s</string>
+    <string name="yes">có</string>
+    <string name="no">không</string>
+    <string name="about">ExtendPad %1$s · chỉ dùng USB cục bộ, không internet, không tài khoản.</string>
+</resources>
