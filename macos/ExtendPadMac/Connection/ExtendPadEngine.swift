@@ -59,6 +59,15 @@ public enum ConnectionPhase: Equatable {
     case error(String)
 }
 
+/// Progress of the one-click "Install adb" download.
+public enum ADBInstallState: Equatable {
+    case idle
+    case downloading(Int)   // percent
+    case installing
+    case installed(String)  // adb version line
+    case failed(String)
+}
+
 public struct EngineStatus: Equatable {
     public var phase: ConnectionPhase = .stopped
     public var device = DeviceSnapshot()
@@ -79,6 +88,7 @@ public struct EngineStatus: Equatable {
     public var accessibilityGranted = false
     public var virtualDisplaySupported = VirtualDisplayManager.isSupported
     public var displayRemovalPending = false
+    public var adbInstall: ADBInstallState = .idle
     public init() {}
 }
 
@@ -98,6 +108,7 @@ public final class ExtendPadEngine: StreamServerDelegate {
     private let capture = ScreenCaptureEngine()
     private let injector = InputInjector()
     private let cursor = CursorTracker()
+    private var adbInstaller: ADBInstaller?
     private var session: StreamingSession?
     private let sinkLock = NSLock()
     private var sink: StreamingSession?
@@ -218,6 +229,30 @@ public final class ExtendPadEngine: StreamServerDelegate {
         }
         monitor.install(apkPath: apk, completion: completion)
     }
+
+    /// Downloads Google's official platform-tools (adb) into ExtendPad's own folder. User-initiated only.
+    public func installADB() {
+        guard adbInstaller == nil else { return }
+        let installer = ADBInstaller()
+        adbInstaller = installer
+        status.adbInstall = .downloading(0)
+        installer.install(progress: { [weak self] p in
+            guard let self, self.adbInstaller === installer else { return }
+            self.status.adbInstall = p >= 1 ? .installing : .downloading(Int(p * 100))
+        }, completion: { [weak self] result in
+            guard let self else { return }
+            self.adbInstaller = nil
+            switch result {
+            case .success(let version):
+                self.status.adbInstall = .installed(version)
+                self.monitor.rescanADB()
+            case .failure(let error):
+                self.status.adbInstall = .failed(error.localizedDescription)
+            }
+        })
+    }
+
+    public var adbIsManagedCopy: Bool { ADB.isManaged(status.device.adbPath) }
 
     public var hasBundledAPK: Bool { Bundle.main.path(forResource: "ExtendPad", ofType: "apk") != nil }
 
@@ -555,7 +590,7 @@ public final class ExtendPadEngine: StreamServerDelegate {
         lines.append("macOS \(pi.operatingSystemVersionString), arch \(Self.machineArch()), \(pi.activeProcessorCount) cores, \(pi.physicalMemory / 1_073_741_824) GB RAM")
         lines.append("Virtual display API: \(VirtualDisplayManager.isSupported ? "available" : VirtualDisplayManager.unsupportedReason)")
         lines.append("Screen Recording: \(status.screenRecordingGranted ? "granted" : "NOT granted"), Accessibility: \(status.accessibilityGranted ? "granted" : "not granted")")
-        lines.append("ADB: \(status.device.adbPath ?? "not found") \(status.device.adbVersion ?? "")")
+        lines.append("ADB: \(status.device.adbPath ?? "not found") \(status.device.adbVersion ?? "")\(adbIsManagedCopy ? " (installed by ExtendPad)" : "")")
         lines.append("Phase: \(status.phase)")
         for d in status.device.allDevices {
             lines.append("  device \(d.serial) state=\(d.state.rawValue) model=\(d.model) usb=\(d.usb ?? "-")")

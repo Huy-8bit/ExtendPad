@@ -9,7 +9,7 @@ ok "$(sw_vers -productName) $(sw_vers -productVersion) ($(uname -m))"
 xcrun --find swift >/dev/null 2>&1 && ok "Swift $(swift --version 2>/dev/null | head -1 | sed 's/.*Swift version \([0-9.]*\).*/\1/')" || bad "Swift toolchain (install Xcode or the Command Line Tools)"
 [[ "$(sw_vers -productVersion | cut -d. -f1)" -ge 13 ]] && ok "macOS ≥ 13 (ScreenCaptureKit + MenuBarExtra)" || bad "macOS 13 or newer is required"
 echo "Android"
-if ADBP=$(find_adb); then ok "adb: $ADBP ($("$ADBP" version | head -1))"; else bad "adb not found (brew install android-platform-tools)"; fi
+if ADBP=$(find_adb); then ok "adb: $ADBP ($("$ADBP" version | head -1))"; else bad "adb not found: click 'Install adb' in the ExtendPad menu, or run: ExtendPad.app/Contents/MacOS/ExtendPad --install-adb"; fi
 java -version >/dev/null 2>&1 && ok "Java: $(java -version 2>&1 | head -1)" || bad "JDK 17 (needed only to build the APK)"
 SDK="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 [[ -d "$SDK/platforms" ]] && ok "Android SDK: $SDK ($(ls "$SDK/platforms" | tr '\n' ' '))" || bad "Android SDK (needed only to build the APK)"

@@ -21,22 +21,43 @@ public final class ADB: @unchecked Sendable {
     public let path: String
     public init(path: String) { self.path = path }
 
-    public static func locate(userPath: String?) -> String? {
-        var candidates: [String] = []
-        if let p = userPath, !p.isEmpty { candidates.append((p as NSString).expandingTildeInPath) }
-        let env = ProcessInfo.processInfo.environment
-        for key in ["ANDROID_HOME", "ANDROID_SDK_ROOT"] {
-            if let v = env[key] { candidates.append(v + "/platform-tools/adb") }
-        }
-        let home = FileManager.default.homeDirectoryForCurrentUser.path
-        candidates += [home + "/Library/Android/sdk/platform-tools/adb",
-                       "/opt/homebrew/bin/adb", "/usr/local/bin/adb",
-                       "/opt/homebrew/Caskroom/android-platform-tools/latest/platform-tools/adb"]
-        if let bundled = Bundle.main.path(forResource: "adb", ofType: nil, inDirectory: "platform-tools") {
-            candidates.append(bundled)
-        }
-        return candidates.first { FileManager.default.isExecutableFile(atPath: $0) }
+    /// ExtendPad's own copy of Google's platform-tools, installed on request by `ADBInstaller`.
+    /// `EXTENDPAD_ADB_DIR` overrides it (tests).
+    public static var managedDirectory: URL {
+        if let d = ProcessInfo.processInfo.environment["EXTENDPAD_ADB_DIR"], !d.isEmpty { return URL(fileURLWithPath: d, isDirectory: true) }
+        return TokenStore.directory.appendingPathComponent("platform-tools", isDirectory: true)
     }
+    public static var managedPath: String { managedDirectory.appendingPathComponent("adb").path }
+
+    /// Search order: explicit user setting → an adb already on the system (Android Studio SDK, Homebrew)
+    /// → ExtendPad's own downloaded copy. System copies win so that ExtendPad never starts a second,
+    /// different adb version that would keep killing Android Studio's adb server.
+    /// `ignoreSystem` (EXTENDPAD_IGNORE_SYSTEM_ADB=1) exists to test the "no adb installed" path.
+    public static func candidatePaths(userPath: String?, env: [String: String], home: String,
+                                      bundled: String?, managed: String, ignoreSystem: Bool = false) -> [String] {
+        var c: [String] = []
+        if let p = userPath, !p.isEmpty { c.append((p as NSString).expandingTildeInPath) }
+        if !ignoreSystem {
+            for key in ["ANDROID_HOME", "ANDROID_SDK_ROOT"] { if let v = env[key], !v.isEmpty { c.append(v + "/platform-tools/adb") } }
+            c += [home + "/Library/Android/sdk/platform-tools/adb",
+                  "/opt/homebrew/bin/adb", "/usr/local/bin/adb",
+                  "/opt/homebrew/Caskroom/android-platform-tools/latest/platform-tools/adb"]
+        }
+        if let bundled { c.append(bundled) }
+        c.append(managed)
+        return c
+    }
+
+    public static func locate(userPath: String?) -> String? {
+        let env = ProcessInfo.processInfo.environment
+        let list = candidatePaths(userPath: userPath, env: env, home: FileManager.default.homeDirectoryForCurrentUser.path,
+                                  bundled: Bundle.main.path(forResource: "adb", ofType: nil, inDirectory: "platform-tools"),
+                                  managed: managedPath, ignoreSystem: env["EXTENDPAD_IGNORE_SYSTEM_ADB"] == "1")
+        return list.first { FileManager.default.isExecutableFile(atPath: $0) }
+    }
+
+    /// True when `path` is ExtendPad's own downloaded copy.
+    public static func isManaged(_ path: String?) -> Bool { path == managedPath }
 
     public struct Result { public var status: Int32; public var stdout: String; public var stderr: String; public var timedOut: Bool
         public var ok: Bool { status == 0 && !timedOut } }

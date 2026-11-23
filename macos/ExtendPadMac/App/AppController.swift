@@ -106,6 +106,8 @@ final class AppController: ObservableObject {
     }
 
     func openTabletApp() { engine.reconnectTablet() }
+    func installADB() { engine.installADB() }
+    func openADBTerms() { NSWorkspace.shared.open(ADBInstaller.termsURL) }
     func gatherWindows() { engine.gatherWindows() }
     var hasBundledAPK: Bool { engine.hasBundledAPK }
 

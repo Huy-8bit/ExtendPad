@@ -5,8 +5,9 @@ Use an Android tablet as a **real extended display** for your Mac, over a **USB�
 ExtendPad creates a genuine second monitor ("ExtendPad Display") that macOS shows in
 **System Settings → Displays**. You can drag windows onto the tablet, keep different apps on each screen,
 and arrange it like any other monitor. It streams that display to the tablet as low‑latency H.264
-through the ADB USB connection. You don't need Wi‑Fi, internet, an account, or root, and you don't
-have to disable SIP or install a kernel extension.
+through the ADB USB connection. You don't need Wi‑Fi, an account, or root, and you don't have to
+disable SIP or install a kernel extension. Internet is used only once, if you let ExtendPad download
+Google's `adb` tool for you.
 
 > Built and tested with a **Huawei MatePad SE (AGS6‑W09, HarmonyOS 2 / Android 10)** and a
 > **MacBook Pro M1 Pro (macOS 15.7.4)**. Other Android 8+ tablets should work too, but they are untested.
@@ -29,11 +30,15 @@ Prebuilt files are in [`dist/`](dist):
 
 **On the Mac:**
 
-1. Install Android platform‑tools (`brew install android-platform-tools`) if you don't have `adb`.
-2. Open `ExtendPad.dmg` and drag ExtendPad into Applications.
-3. The build is ad‑hoc signed, not notarized. The first time, right‑click ExtendPad → **Open** → Open.
-4. Grant **Screen Recording** when macOS asks (System Settings → Privacy & Security), then reopen ExtendPad.
+1. Open `ExtendPad.dmg` and drag ExtendPad into Applications.
+2. The build is ad‑hoc signed, not notarized. The first time, right‑click ExtendPad → **Open** → Open.
+3. Grant **Screen Recording** when macOS asks (System Settings → Privacy & Security), then reopen ExtendPad.
    It runs in the menu bar.
+4. If the menu says adb is missing, click **Install adb**. ExtendPad downloads Google's official Android
+   SDK Platform‑Tools once (≈17 MB), checks Google's code signature, and keeps them in its own folder
+   (`~/Library/Application Support/ExtendPad/platform-tools`). You don't need Homebrew or the Terminal.
+   If you already have `adb` (Android Studio or `brew install android-platform-tools`), ExtendPad uses
+   that one and skips this step.
 
 **Connect:**
 
@@ -105,7 +110,7 @@ scripts/collect-diagnostics.sh # local logs + device facts (nothing is uploaded)
 
 Tests:
 
-- **Unit tests:** `cd macos && swift test` (40 tests) and `cd android && ./gradlew test`.
+- **Unit tests:** `cd macos && swift test` (49 tests) and `cd android && ./gradlew test`.
   Both suites check the same protocol and HMAC test vectors in `shared/protocol/test-vectors.json`.
 
 - **Mac self‑test:** `ExtendPad.app/Contents/MacOS/ExtendPad --selftest 10` runs the real virtual display,
@@ -121,6 +126,8 @@ Tests:
   need to re‑grant Screen Recording.
 
 - **Debug‑signed APK:** Huawei asks you to confirm every install over USB.
+- **adb:** if no `adb` is installed, the one-click download needs internet once. ExtendPad then uses
+  Google's Platform-Tools under [Google's terms](https://developer.android.com/tools/releases/platform-tools).
 - **Touch input** (tap = click, long‑press = right‑click, two fingers = scroll) is implemented and
   unit‑tested but **not yet verified on a real device**. It needs the *Allow touch input* setting plus
   macOS Accessibility permission. It is pointer emulation, not native multitouch.
@@ -136,6 +143,6 @@ Tests:
 ## Hướng dẫn nhanh (Tiếng Việt)
 
 1. Trên máy tính bảng, bật **Tuỳ chọn nhà phát triển → Gỡ lỗi USB**. Với Huawei, bật thêm *Cho phép gỡ lỗi ADB ở chế độ chỉ sạc*.
-2. Trên Mac, cài `adb` (`brew install android-platform-tools`). Mở `ExtendPad.dmg`, kéo vào Applications, rồi chuột phải → **Mở**. Cấp quyền **Ghi màn hình**.
+2. Trên Mac, mở `ExtendPad.dmg`, kéo vào Applications, rồi chuột phải → **Mở**. Cấp quyền **Ghi màn hình**. Nếu menu báo thiếu adb, bấm **Cài adb** (tải một lần ≈17 MB từ Google, không cần Terminal).
 3. Cắm cáp USB‑C có truyền dữ liệu và bấm **Cho phép** trên máy tính bảng. Nếu chưa có app trên tablet, chọn *Cài ứng dụng lên máy tính bảng* trong menu ExtendPad.
 4. Máy tính bảng sẽ tự mở và hiển thị màn hình mở rộng. Sắp xếp vị trí màn hình trong **Cài đặt hệ thống → Màn hình**.

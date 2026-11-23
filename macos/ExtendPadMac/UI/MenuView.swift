@@ -160,6 +160,7 @@ struct MenuView: View {
                 }
             }
             .controlSize(.large)
+            if showADBInstaller { ADBInstallView() }
             if case .appMissing = app.status.phase, app.hasBundledAPK {
                 Button { app.installTabletApp() } label: { Label(L("action.installApp"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }
             }
@@ -175,6 +176,14 @@ struct MenuView: View {
         }
     }
 
+    private var showADBInstaller: Bool {
+        if case .adbMissing = app.status.phase { return true }
+        switch app.status.adbInstall {
+        case .downloading, .installing, .failed: return true
+        default: return false
+        }
+    }
+
     private var footer: some View {
         HStack {
             Button(L("action.settings")) { SettingsWindow.show() }
@@ -183,6 +192,44 @@ struct MenuView: View {
         }
         .buttonStyle(.borderless)
         .font(.system(size: 12))
+    }
+}
+
+/// "Install adb" button with progress, used in the menu and in Settings.
+struct ADBInstallView: View {
+    @EnvironmentObject var app: AppController
+    var compact = false
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            switch app.status.adbInstall {
+            case .downloading(let pct):
+                ProgressView(value: Double(pct), total: 100) { Text(L("adb.downloading")).font(.caption) }
+            case .installing:
+                ProgressView { Text(L("adb.installing")).font(.caption) }
+            case .installed(let v):
+                Label(L("adb.installed") + " · " + v.replacingOccurrences(of: "Android Debug Bridge ", with: ""), systemImage: "checkmark.circle.fill")
+                    .font(.caption).foregroundStyle(.green)
+            case .failed(let e):
+                Text(L("adb.failed") + ": " + e).font(.caption).foregroundStyle(.red).fixedSize(horizontal: false, vertical: true)
+                installButton
+            case .idle:
+                installButton
+            }
+            if !compact {
+                HStack(spacing: 4) {
+                    Text(L("adb.note")).font(.caption2).foregroundStyle(.secondary)
+                    Button(L("adb.terms")) { app.openADBTerms() }.buttonStyle(.link).font(.caption2)
+                }
+            }
+        }
+    }
+
+    private var installButton: some View {
+        Button { app.installADB() } label: {
+            Label(L("adb.install"), systemImage: "arrow.down.circle").frame(maxWidth: .infinity)
+        }
+        .controlSize(.large)
+        .keyboardShortcut(.defaultAction)
     }
 }
 

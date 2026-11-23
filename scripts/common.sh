@@ -7,7 +7,8 @@ TOKEN_FILE="$HOME/Library/Application Support/ExtendPad/pairing-token"
 
 find_adb() {
   for c in "${ADB:-}" "${ANDROID_HOME:-}/platform-tools/adb" "${ANDROID_SDK_ROOT:-}/platform-tools/adb" \
-           "$HOME/Library/Android/sdk/platform-tools/adb" /opt/homebrew/bin/adb /usr/local/bin/adb "$(command -v adb 2>/dev/null)"; do
+           "$HOME/Library/Android/sdk/platform-tools/adb" /opt/homebrew/bin/adb /usr/local/bin/adb "$(command -v adb 2>/dev/null)" \
+           "$HOME/Library/Application Support/ExtendPad/platform-tools/adb"; do
     [[ -n "$c" && -x "$c" ]] && { echo "$c"; return 0; }
   done
   return 1

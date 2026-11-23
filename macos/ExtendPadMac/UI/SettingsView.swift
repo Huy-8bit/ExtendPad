@@ -111,6 +111,14 @@ private struct ConnectionTab: View {
             Toggle(L("conn.autoLaunch"), isOn: $app.settings.autoLaunchTabletApp)
             Toggle(L("conn.autoReconnect"), isOn: $app.settings.autoReconnect)
             TextField(L("conn.adbPath"), text: $app.settings.adbPath, prompt: Text(app.status.device.adbPath ?? L("conn.adbPath.auto")))
+            LabeledContent("adb") {
+                Text(app.status.device.adbPath == nil ? L("adb.missing")
+                     : (app.engine.adbIsManagedCopy ? L("adb.source.managed") : L("adb.source.system")))
+                    .foregroundStyle(.secondary)
+            }
+            if app.status.device.adbPath == nil || app.engine.adbIsManagedCopy {
+                ADBInstallView().environmentObject(app)
+            }
             Section(L("conn.status")) {
                 LabeledContent("adb", value: app.status.device.adbVersion ?? "—")
                 LabeledContent(L("label.tablet"), value: app.status.device.serial.map { "\(app.status.device.model) (\($0))" } ?? L("value.notConnected"))

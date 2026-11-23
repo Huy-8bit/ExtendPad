@@ -88,6 +88,9 @@ public final class DeviceMonitor: @unchecked Sendable {
 
     public func pollNow() { queue.async { self.poll() } }
 
+    /// Forget the current adb binary and look it up again (after ExtendPad installed its own copy).
+    public func rescanADB() { queue.async { self.adb = nil; self.adbVersion = nil; self.poll() } }
+
     /// Allow the tablet app to be opened again right away (user pressed Connect, transport recovered…).
     public func grantLaunches(_ n: Int = DeviceMonitor.defaultLaunchBudget) {
         queue.async {
